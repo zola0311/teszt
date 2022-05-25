@@ -1,0 +1,41 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Lista - Autókölcsönző</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+<div th:insert="~{navbar :: navbar}"></div>
+<div class="container">
+    <div class="mb-3" style="margin-top: 10px">
+        <a th:href="@{'/create'}" class="btn btn-success">Új jármű hozzáadása</a>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Márka</th>
+            <th>Típus</th>
+            <th>Üzemanyag</th>
+            <th>Kilóméteróra állása</th>
+            <th>Szín</th>
+            <th>Bérben van-e</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="car : ${cars}">
+            <td th:text="${car.Manufacturer}"></td>
+            <td th:text="${car.Type}"></td>
+            <td th:text="${car.FuelType}"></td>
+            <td th:text="${car.OdoMeter}"></td>
+            <td th:text="${car.Color}"></td>
+            <td th:text="${car.IsLending}"></td>
+            <td><a th:href="@{/edit/} + ${car.Id}" class="btn btn-primary">Szerkesztés</a></td>
+            <td><a th:href="@{/delete/} + ${car.Id}" class="btn btn-danger">Törlés</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

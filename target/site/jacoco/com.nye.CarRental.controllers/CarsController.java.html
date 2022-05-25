@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="hu"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CarsController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">carRental</a> &gt; <a href="index.source.html" class="el_package">com.nye.CarRental.controllers</a> &gt; <span class="el_source">CarsController.java</span></div><h1>CarsController.java</h1><pre class="source lang-java linenums">package com.nye.CarRental.controllers;
+
+import com.nye.CarRental.models.CarsModel;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.*;
+
+@Controller
+<span class="fc" id="L11">public class CarsController {</span>
+
+<span class="fc" id="L13">    List&lt;CarsModel&gt; cars = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L14">    boolean firstStart = false;</span>
+
+    @GetMapping(&quot;/&quot;)
+    public String showIndex(Model model) {
+<span class="nc bnc" id="L18" title="All 2 branches missed.">        if(!firstStart) {</span>
+<span class="nc" id="L19">            cars.add(new CarsModel(UUID.randomUUID().toString(), &quot;Audi&quot;, &quot;A6&quot;, &quot;Benzin&quot;, &quot;265678&quot;, &quot;Fehér&quot;, &quot;Nem&quot;));</span>
+<span class="nc" id="L20">            cars.add(new CarsModel(UUID.randomUUID().toString(), &quot;Toyota&quot;, &quot;Hilux&quot;, &quot;Dízel&quot;, &quot;476598&quot;, &quot;Barna&quot;, &quot;Nem&quot;));</span>
+<span class="nc" id="L21">            firstStart = true;</span>
+        }
+<span class="nc" id="L23">        model.addAttribute(&quot;cars&quot;, cars);</span>
+<span class="nc" id="L24">        return &quot;index&quot;;</span>
+    }
+
+    @GetMapping(&quot;/create&quot;)
+    public String showCreate(Model model) {
+<span class="nc" id="L29">        model.addAttribute(&quot;car&quot;, new CarsModel());</span>
+<span class="nc" id="L30">        model.addAttribute(&quot;cars&quot;, cars);</span>
+<span class="nc" id="L31">        return &quot;addNewCar&quot;;</span>
+    }
+
+    @PostMapping(&quot;/create&quot;)
+    public String postCreate(@ModelAttribute CarsModel car, Model model) {
+<span class="nc" id="L36">        model.addAttribute(&quot;cars&quot;, cars);</span>
+<span class="nc" id="L37">        car.setId(UUID.randomUUID().toString());</span>
+<span class="nc" id="L38">        cars.add(car);</span>
+<span class="nc" id="L39">        return &quot;index&quot;;</span>
+    }
+
+    @GetMapping(&quot;/edit/{id}&quot;)
+    public String showEdit(@PathVariable(value = &quot;id&quot;) String id, Model model) {
+<span class="nc" id="L44">        model.addAttribute(&quot;cars&quot;, cars);</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">        for(CarsModel car : cars) {</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">            if (car.getId().equals(id)) {</span>
+<span class="nc" id="L47">                model.addAttribute(&quot;car&quot;, car);</span>
+            }
+<span class="nc" id="L49">        }</span>
+<span class="nc" id="L50">        return &quot;editCar&quot;;</span>
+    }
+
+    @PostMapping(&quot;/edit&quot;)
+    public String postEdit(@ModelAttribute CarsModel car, Model model) {
+<span class="nc" id="L55">        model.addAttribute(&quot;cars&quot;, cars);</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">        for(CarsModel currentCar : cars) {</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">            if (currentCar.getId().equals(car.getId())) {</span>
+<span class="nc" id="L58">                currentCar.setManufacturer(car.getManufacturer());</span>
+<span class="nc" id="L59">                currentCar.setType(car.getType());</span>
+<span class="nc" id="L60">                currentCar.setFuelType(car.getFuelType());</span>
+<span class="nc" id="L61">                currentCar.setOdoMeter(car.getOdoMeter());</span>
+<span class="nc" id="L62">                currentCar.setColor(car.getColor());</span>
+<span class="nc" id="L63">                currentCar.setIsLending(car.getIsLending());</span>
+            }
+<span class="nc" id="L65">        }</span>
+<span class="nc" id="L66">        return &quot;index&quot;;</span>
+    }
+
+    @GetMapping(&quot;/delete/{id}&quot;)
+    public String deleteCar(@PathVariable(value = &quot;id&quot;) String id, Model model) {
+<span class="nc" id="L71">        model.addAttribute(&quot;cars&quot;, cars);</span>
+<span class="nc" id="L72">        cars.removeIf(car -&gt; car.getId().equals(id));</span>
+<span class="nc" id="L73">        return &quot;index&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
